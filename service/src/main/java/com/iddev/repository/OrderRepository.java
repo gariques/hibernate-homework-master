@@ -5,6 +5,7 @@ import com.iddev.filters.ClientFilter;
 import com.iddev.predicates.QPredicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.hibernate.graph.GraphSemantic;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import java.util.List;
 import static com.iddev.entity.QClient.client;
 import static com.iddev.entity.QOrder.order;
 
+@Repository
 public class OrderRepository extends AbstractCrudRepository<Long, Order> {
 
 
