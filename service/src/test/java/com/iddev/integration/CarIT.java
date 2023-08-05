@@ -1,7 +1,9 @@
-package com.iddev.entity;
+package com.iddev.integration;
 
+import com.iddev.entity.Car;
 import com.iddev.enums.CarStatus;
 import com.iddev.filters.CarFilter;
+import com.iddev.repository.CarRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,7 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class CarTest extends BaseTest {
+class CarIT extends AbstractIntegrationTest {
+
+    private final CarRepository carRepository = context.getBean(CarRepository.class);
+
 
     @Test
     void saveCar() {

@@ -1,8 +1,14 @@
-package com.iddev.entity;
+package com.iddev.integration;
 
+import com.iddev.entity.Car;
+import com.iddev.entity.Client;
+import com.iddev.entity.Order;
 import com.iddev.enums.CarStatus;
 import com.iddev.enums.Role;
 import com.iddev.filters.ClientFilter;
+import com.iddev.repository.CarRepository;
+import com.iddev.repository.ClientRepository;
+import com.iddev.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 
 
@@ -14,7 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class OrderTest extends BaseTest {
+class OrderIT extends AbstractIntegrationTest {
+
+    private final CarRepository carRepository = context.getBean(CarRepository.class);
+    private final ClientRepository clientRepository = context.getBean(ClientRepository.class);
+    private final OrderRepository orderRepository = context.getBean(OrderRepository.class);
 
     @Test
     void saveOrder() {

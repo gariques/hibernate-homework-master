@@ -6,6 +6,7 @@ import com.iddev.predicates.QPredicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.hibernate.Session;
 import org.hibernate.graph.GraphSemantic;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static com.iddev.entity.QCar.car;
 
+@Repository
 public class CarRepository extends AbstractCrudRepository<Long, Car> {
 
     public CarRepository(EntityManager entityManager) {

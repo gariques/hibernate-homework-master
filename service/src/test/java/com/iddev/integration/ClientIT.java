@@ -1,14 +1,18 @@
-package com.iddev.entity;
+package com.iddev.integration;
 
+import com.iddev.entity.Client;
 import com.iddev.enums.Role;
 import com.iddev.filters.ClientFilter;
+import com.iddev.repository.ClientRepository;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ClientTest extends BaseTest {
+public class ClientIT extends AbstractIntegrationTest {
+
+    private final ClientRepository clientRepository = context.getBean(ClientRepository.class);
 
     @Test
     void saveClient() {
