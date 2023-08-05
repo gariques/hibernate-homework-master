@@ -1,41 +1,40 @@
 package com.iddev.entity;
 
+import com.iddev.config.ApplicationConfiguration;
 import com.iddev.repository.CarRepository;
 import com.iddev.repository.ClientRepository;
 import com.iddev.repository.OrderRepository;
-import com.iddev.util.HibernateUtil;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.persistence.EntityManager;
-import java.lang.reflect.Proxy;
 
 public abstract class BaseTest {
 
-    private static SessionFactory sessionFactory;
+    protected static AnnotationConfigApplicationContext context;
+
     protected static EntityManager entityManager;
-    protected CarRepository carRepository = new CarRepository(entityManager);
-    protected ClientRepository clientRepository = new ClientRepository(entityManager);
-    protected OrderRepository orderRepository = new OrderRepository(entityManager);
+
+    protected CarRepository carRepository = context.getBean(CarRepository.class);
+    protected ClientRepository clientRepository = context.getBean(ClientRepository.class);
+    protected OrderRepository orderRepository = context.getBean(OrderRepository.class);
 
     @BeforeAll
     static void setUp() {
-        sessionFactory = HibernateUtil.buildSessionFactory();
-        entityManager = (EntityManager) Proxy.newProxyInstance(SessionFactory.class.getClassLoader(), new Class[]{EntityManager.class},
-                (proxy, method, args) -> method.invoke(sessionFactory.getCurrentSession(), args));
+        context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        entityManager = context.getBean(EntityManager.class);
     }
 
     @AfterAll
     static void shutDown() {
-        sessionFactory.close();
+        context.close();
     }
 
     @BeforeEach
     void openTransaction() {
-//        entityManager  = sessionFactory.getCurrentSession();
         entityManager.getTransaction().begin();
     }
 
