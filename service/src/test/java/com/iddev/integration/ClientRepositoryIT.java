@@ -1,18 +1,27 @@
 package com.iddev.integration;
 
+import com.iddev.annotation.IT;
 import com.iddev.entity.Client;
 import com.iddev.enums.Role;
 import com.iddev.filters.ClientFilter;
 import com.iddev.repository.ClientRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestConstructor;
+
+import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ClientIT extends AbstractIntegrationTest {
+@IT
+@RequiredArgsConstructor
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+public class ClientRepositoryIT {
 
-    private final ClientRepository clientRepository = context.getBean(ClientRepository.class);
+    private final EntityManager entityManager;
+    private final ClientRepository clientRepository;
 
     @Test
     void saveClient() {

@@ -1,20 +1,28 @@
 package com.iddev.integration;
 
+import com.iddev.annotation.IT;
 import com.iddev.entity.Car;
 import com.iddev.enums.CarStatus;
 import com.iddev.filters.CarFilter;
 import com.iddev.repository.CarRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestConstructor;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class CarIT extends AbstractIntegrationTest {
+@IT
+@RequiredArgsConstructor
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class CarRepositoryIT {
 
-    private final CarRepository carRepository = context.getBean(CarRepository.class);
+    private final EntityManager entityManager;
+    private final CarRepository carRepository;
 
 
     @Test

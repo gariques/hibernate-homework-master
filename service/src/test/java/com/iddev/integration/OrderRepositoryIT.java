@@ -1,5 +1,6 @@
 package com.iddev.integration;
 
+import com.iddev.annotation.IT;
 import com.iddev.entity.Car;
 import com.iddev.entity.Client;
 import com.iddev.entity.Order;
@@ -9,9 +10,12 @@ import com.iddev.filters.ClientFilter;
 import com.iddev.repository.CarRepository;
 import com.iddev.repository.ClientRepository;
 import com.iddev.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestConstructor;
 
 
+import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -20,11 +24,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class OrderIT extends AbstractIntegrationTest {
+@IT
+@RequiredArgsConstructor
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class OrderRepositoryIT {
 
-    private final CarRepository carRepository = context.getBean(CarRepository.class);
-    private final ClientRepository clientRepository = context.getBean(ClientRepository.class);
-    private final OrderRepository orderRepository = context.getBean(OrderRepository.class);
+    private final EntityManager entityManager;
+    private final CarRepository carRepository;
+    private final ClientRepository clientRepository;
+    private final OrderRepository orderRepository;
 
     @Test
     void saveOrder() {
