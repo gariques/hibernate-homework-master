@@ -25,7 +25,7 @@ import java.time.Instant;
 @Builder
 @Entity
 @Table(name = "orders")
-public class Order implements BaseEntity<Long> {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,51 +1,16 @@
 package com.iddev.repository;
 
 import com.iddev.entity.Car;
-import com.iddev.filters.CarFilter;
-import com.iddev.predicates.QPredicate;
-import com.querydsl.jpa.impl.JPAQuery;
-import org.hibernate.Session;
-import org.hibernate.graph.GraphSemantic;
-import org.springframework.stereotype.Repository;
+import com.iddev.enums.CarStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import java.util.List;
+public interface CarRepository extends JpaRepository<Car, Long>, FilterCarRepository {
 
-import static com.iddev.entity.QCar.car;
-
-@Repository
-public class CarRepository extends AbstractCrudRepository<Long, Car> {
-
-    public CarRepository(EntityManager entityManager) {
-        super(Car.class, entityManager);
-    }
-
-    public List<Car> getAvailableCars(EntityManager entityManager, CarFilter filter, EntityGraph<Car> graph) {
-        var predicate = QPredicate.builder()
-                .add(filter.getStatus(), car.status::eq)
-                .add(filter.getStatus(), car.status::eq)
-                .buildAnd();
-
-        return new JPAQuery<Car>(entityManager)
-                .select(car)
-                .from(car)
-                .where(predicate)
-                .setHint(GraphSemantic.FETCH.getJpaHintName(), graph)
-                .fetch();
-    }
-
-    public List<Car> getCarsByColour(EntityManager entityManager, CarFilter filter, EntityGraph<Car> graph) {
-        var predicate = QPredicate.builder()
-                .add(filter.getColour(), car.colour::eq)
-                .add(filter.getColour(), car.colour::eq)
-                .buildAnd();
-
-        return new JPAQuery<Car>(entityManager)
-                .select(car)
-                .from(car)
-                .where(predicate)
-                .setHint(GraphSemantic.FETCH.getJpaHintName(), graph)
-                .fetch();
-    }
+    @Modifying(clearAutomatically = true)
+    @Query("update Car c " +
+            "set c.status = :status " +
+            "where c.id = :id")
+    void updateStatus(CarStatus status, Long id);
 }

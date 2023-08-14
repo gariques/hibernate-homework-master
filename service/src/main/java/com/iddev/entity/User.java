@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements BaseEntity<Long> {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

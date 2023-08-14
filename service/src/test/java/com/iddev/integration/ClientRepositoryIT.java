@@ -7,17 +7,16 @@ import com.iddev.filters.ClientFilter;
 import com.iddev.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestConstructor;
 
 import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IT
 @RequiredArgsConstructor
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 public class ClientRepositoryIT {
 
     private final EntityManager entityManager;
@@ -57,28 +56,8 @@ public class ClientRepositoryIT {
         var actualClient = clientRepository.findById(client.getId());
 
         assertNotNull(client.getId());
+        assertTrue(actualClient.isPresent());
         assertEquals(client, actualClient.get());
-    }
-
-    @Test
-    void updateClient() {
-        var client = Client.builder()
-                .firstName("Test")
-                .lastName("Testoff")
-                .login("test@gmail.com")
-                .driverLicenseId("123")
-                .password("111")
-                .role(Role.CLIENT)
-                .build();
-        clientRepository.save(client);
-        client.setDriverLicenseId("123");
-        entityManager.clear();
-
-        clientRepository.update(client);
-
-        var updatedClient = clientRepository.findById(client.getId());
-
-        assertThat(updatedClient.get()).isEqualTo(client);
     }
 
     @Test
@@ -127,7 +106,7 @@ public class ClientRepositoryIT {
                 .lastName("Testoff")
                 .build();
 
-        var clients = clientRepository.getClientsByFirstAndLastnames(entityManager, filter, clientGraph);
+        var clients = clientRepository.findClientsByFirstAndLastnames(entityManager, filter, clientGraph);
         assertThat(clients).hasSize(1);
         assertThat(clients.get(0).getLastName()).isEqualTo("Testoff");
     }

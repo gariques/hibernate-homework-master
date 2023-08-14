@@ -7,23 +7,40 @@ import com.iddev.filters.CarFilter;
 import com.iddev.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestConstructor;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @IT
 @RequiredArgsConstructor
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class CarRepositoryIT {
 
     private final EntityManager entityManager;
     private final CarRepository carRepository;
 
+    @Test
+    void updateStatus() {
+        var car = Car.builder()
+                .model("Toyota Crown S220")
+                .colour("white")
+                .price(3000)
+                .status(CarStatus.AVAILABLE)
+                .build();
+        carRepository.save(car);
+        carRepository.updateStatus(CarStatus.NOT_AVAILABLE, car.getId());
+
+        var updatedCar = carRepository.findById(car.getId());
+
+        assertTrue(updatedCar.isPresent());
+        assertEquals(CarStatus.NOT_AVAILABLE, updatedCar.get().getStatus());
+
+    }
 
     @Test
     void saveCar() {
@@ -54,28 +71,8 @@ class CarRepositoryIT {
         var actualResult = carRepository.findById(expectedResult.getId());
 
         assertNotNull(expectedResult.getId());
+        assertTrue(actualResult.isPresent());
         assertEquals(expectedResult, actualResult.get());
-//        Денис, как тут правильно проверить, у меня метод гет подсвечивается
-    }
-
-    @Test
-    void updateCar() {
-        var car = Car.builder()
-                .model("Toyota Crown S220")
-                .colour("white")
-                .price(3000)
-                .status(CarStatus.AVAILABLE)
-                .build();
-        carRepository.save(car);
-        car.setPrice(5000);
-        car.setColour("new-Colour");
-        entityManager.clear();
-
-        carRepository.update(car);
-
-        var updatedCar = carRepository.findById(car.getId());
-
-        assertThat(updatedCar.get()).isEqualTo(car);
     }
 
     @Test
@@ -124,7 +121,7 @@ class CarRepositoryIT {
         carRepository.save(car2);
         carRepository.save(car3);
 
-        List<Car> carList = carRepository.getAvailableCars(entityManager, filter, carGraph);
+        List<Car> carList = carRepository.findAllAvailableCars(entityManager, filter, carGraph);
 
         assertThat(carList).hasSize(2);
         assertThat(carList.get(0).getModel()).isEqualTo("Toyota Crown S220");
@@ -161,7 +158,7 @@ class CarRepositoryIT {
         carRepository.save(car2);
         carRepository.save(car3);
 
-        List<Car> carList = carRepository.getCarsByColour(entityManager, filter, carGraph);
+        List<Car> carList = carRepository.findCarsByColour(entityManager, filter, carGraph);
 
         assertThat(carList).hasSize(2);
         assertThat(carList.get(0).getModel()).isEqualTo("Toyota Crown S220");

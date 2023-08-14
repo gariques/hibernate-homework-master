@@ -12,7 +12,6 @@ import com.iddev.repository.ClientRepository;
 import com.iddev.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestConstructor;
 
 
 import javax.persistence.EntityManager;
@@ -26,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @IT
 @RequiredArgsConstructor
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class OrderRepositoryIT {
 
     private final EntityManager entityManager;
@@ -100,44 +98,6 @@ class OrderRepositoryIT {
 
         assertNotNull(order.getId());
         assertEquals(order, actualResult.get());
-    }
-
-    @Test
-    void updateOrder() {
-        var client = Client.builder()
-                .firstName("Test")
-                .lastName("Testoff")
-                .login("test@gmail.com")
-                .driverLicenseId("123")
-                .password("111")
-                .role(Role.CLIENT)
-                .build();
-
-        var car = Car.builder()
-                .model("Toyota Crown S220")
-                .colour("white")
-                .price(3000)
-                .status(CarStatus.AVAILABLE)
-                .build();
-
-        var order = Order.builder()
-                .startDate(Instant.now().truncatedTo(ChronoUnit.HOURS))
-                .finishDate(Instant.now().plusSeconds(86400).truncatedTo(ChronoUnit.HOURS))
-                .build();
-        order.setCar(car);
-        order.setClient(client);
-
-        clientRepository.save(client);
-        carRepository.save(car);
-        orderRepository.save(order);
-
-        order.setFinishDate(Instant.now().plusSeconds(172800).truncatedTo(ChronoUnit.HOURS));
-        entityManager.clear();
-        orderRepository.update(order);
-
-        var updatedOrder = orderRepository.findById(order.getId());
-
-        assertThat(updatedOrder.get()).isEqualTo(order);
     }
 
     @Test
@@ -239,7 +199,7 @@ class OrderRepositoryIT {
                 .firstName("Test")
                 .lastName("Testoff")
                 .build();
-        List<Order> orderList = orderRepository.getOrdersByFirstAndLastnames(entityManager, filter, orderGraph);
+        List<Order> orderList = orderRepository.findOrdersByFirstAndLastnames(entityManager, filter, orderGraph);
 
         assertThat(orderList).hasSize(2);
         assertThat(orderList.get(0).getClient().getLastName()).isEqualTo("Testoff");

@@ -25,7 +25,7 @@ import java.util.List;
 @ToString(exclude = "orders")
 @Builder
 @Entity
-public class Car implements BaseEntity<Long> {
+public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
