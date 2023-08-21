@@ -22,10 +22,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@IT
 @RequiredArgsConstructor
-class OrderRepositoryIT {
+class OrderRepositoryIT extends IntegrationTestBase {
 
     private final EntityManager entityManager;
     private final CarRepository carRepository;
@@ -97,6 +97,7 @@ class OrderRepositoryIT {
         var actualResult = orderRepository.findById(order.getId());
 
         assertNotNull(order.getId());
+        assertTrue(actualResult.isPresent());
         assertEquals(order, actualResult.get());
     }
 

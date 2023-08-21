@@ -1,9 +1,7 @@
 spring:
   datasource:
-    username:
-    password:
-    url: jdbc:h2:mem:iddev;MODE=LEGACY
-    driver-class-name: org.h2.Driver
+    username: test
+    password: test
 
   jpa:
     show-sql: true

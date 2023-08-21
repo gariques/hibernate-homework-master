@@ -27,35 +27,18 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <querydsl.version>5.0.0</querydsl.version>
-    <hibernate.jpamodelgen.version>5.6.8.Final</hibernate.jpamodelgen.version>
     <javax.persistence-api>2.2</javax.persistence-api>
-    <lombok.version>1.18.22</lombok.version>
     <spring.version>5.3.29</spring.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.liquibase</groupId>
-        <artifactId>liquibase-core</artifactId>
-        <version>4.23.1</version>
-      </dependency>
-      <dependency>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <artifactId>spring-boot-starter-web</artifactId>
         <version>2.7.14</version>
       </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>5.6.15.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-jpamodelgen</artifactId>
-        <version>${hibernate.jpamodelgen.version}</version>
-        <scope>provided</scope>
-      </dependency>
+
       <dependency>
         <groupId>com.querydsl</groupId>
         <artifactId>querydsl-apt</artifactId>
@@ -68,30 +51,15 @@
         <version>${querydsl.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.postgresql</groupId>
+        <groupId>org.testcontainers</groupId>
         <artifactId>postgresql</artifactId>
-        <version>42.6.0</version>
-        <scope>runtime</scope>
+        <version>1.18.3</version>
+        <scope>test</scope>
       </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
-        <scope>provided</scope>
-      </dependency>
-
       <dependency>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
         <version>2.7.14</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>2.2.220</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

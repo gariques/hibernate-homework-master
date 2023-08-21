@@ -19,9 +19,8 @@ public class FilterCarRepositoryImpl implements FilterCarRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<Car> findAllAvailableCars(EntityManager entityManager, CarFilter filter, EntityGraph<Car> graph) {
+    public List<Car> findAllAvailableCars(CarFilter filter, EntityGraph<Car> graph) {
         var predicate = QPredicate.builder()
-                .add(filter.getStatus(), car.status::eq)
                 .add(filter.getStatus(), car.status::eq)
                 .buildAnd();
 
@@ -34,9 +33,8 @@ public class FilterCarRepositoryImpl implements FilterCarRepository {
     }
 
     @Override
-    public List<Car> findCarsByColour(EntityManager entityManager, CarFilter filter, EntityGraph<Car> graph) {
+    public List<Car> findCarsByColour(CarFilter filter, EntityGraph<Car> graph) {
         var predicate = QPredicate.builder()
-                .add(filter.getColour(), car.colour::eq)
                 .add(filter.getColour(), car.colour::eq)
                 .buildAnd();
 

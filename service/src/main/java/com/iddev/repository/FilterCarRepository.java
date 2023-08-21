@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface FilterCarRepository {
 
-    List<Car> findAllAvailableCars(EntityManager entityManager, CarFilter filter, EntityGraph<Car> graph);
+    List<Car> findAllAvailableCars(CarFilter filter, EntityGraph<Car> graph);
 
-    List<Car> findCarsByColour(EntityManager entityManager, CarFilter filter, EntityGraph<Car> graph);
+    List<Car> findCarsByColour(CarFilter filter, EntityGraph<Car> graph);
 }

@@ -10,16 +10,14 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@IT
 @RequiredArgsConstructor
-class CarRepositoryIT {
+class CarRepositoryIT extends IntegrationTestBase {
 
     private final EntityManager entityManager;
     private final CarRepository carRepository;
@@ -85,6 +83,7 @@ class CarRepositoryIT {
                 .build();
 
         carRepository.save(car);
+        entityManager.clear();
         carRepository.delete(car);
 
         assertThat(carRepository.findById(car.getId()).isEmpty()).isTrue();
@@ -121,7 +120,7 @@ class CarRepositoryIT {
         carRepository.save(car2);
         carRepository.save(car3);
 
-        List<Car> carList = carRepository.findAllAvailableCars(entityManager, filter, carGraph);
+        List<Car> carList = carRepository.findAllAvailableCars(filter, carGraph);
 
         assertThat(carList).hasSize(2);
         assertThat(carList.get(0).getModel()).isEqualTo("Toyota Crown S220");
@@ -158,7 +157,7 @@ class CarRepositoryIT {
         carRepository.save(car2);
         carRepository.save(car3);
 
-        List<Car> carList = carRepository.findCarsByColour(entityManager, filter, carGraph);
+        List<Car> carList = carRepository.findCarsByColour(filter, carGraph);
 
         assertThat(carList).hasSize(2);
         assertThat(carList.get(0).getModel()).isEqualTo("Toyota Crown S220");
